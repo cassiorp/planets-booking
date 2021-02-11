@@ -1,0 +1,8 @@
+rootProject.name = 'planets-booking-api'
+
+include 'planetsbooking-controller'
+include 'planetsbooking-service'
+include 'planetsbooking-repository'
+include 'planetsbooking-integration'
+include 'planetsbooking-model'
+
