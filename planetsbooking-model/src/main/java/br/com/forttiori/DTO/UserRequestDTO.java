@@ -24,11 +24,11 @@ public class UserRequestDTO {
 
     public static User mapToUserEntity(UserRequestDTO userRequestDTO) {
         return Optional.ofNullable(userRequestDTO)
-                .map(user -> User.builder()
-                        .nome(userRequestDTO.getNome())
-                        .email(userRequestDTO.getEmail())
+                .map(userDTO -> User.builder()
+                        .nome(userDTO.getNome())
+                        .email(userDTO.getEmail())
                         .build())
-                .orElse(null);
+                .orElseThrow(() -> new IllegalArgumentException());
     }
 
 }
