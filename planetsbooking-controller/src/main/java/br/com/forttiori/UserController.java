@@ -1,2 +1,49 @@
-package br.com.forttiori;public class UserController {
+package br.com.forttiori;
+
+import br.com.forttiori.DTO.UserRequestDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.List;
+
+@RestController
+@RequestMapping("api/users")
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
+
+    @PostMapping
+    public User save(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+        return this.userService.save(userRequestDTO);
+    }
+
+    @GetMapping
+    public List<User> findAll(
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "nome", required = false) String nome
+    ) {
+        return this.userService.find(page, nome);
+    }
+
+    @GetMapping("/price")
+    public List<User> findAllByReservations_PriceBetween(
+            @RequestParam("min") Double min,
+            @RequestParam("max") Double max
+    ) {
+        return this.userService.findAllByReservations_PriceBetween(min, max);
+    }
+
+    @DeleteMapping
+    public List<User> deleteMany(@RequestParam("ids") List<String> ids) {
+        return userService.deleteMany(ids);
+    }
+
+    @RequestMapping(method = RequestMethod.OPTIONS)
+    public void options(HttpServletResponse response) {
+        response.setHeader("Allow", "POST,GET,DELETE");
+    }
+
 }

@@ -1,7 +1,7 @@
 package br.com.forttiori.exception;
 
-public class PaginaNotFound extends RuntimeException{
-    public PaginaNotFound(String message) {
+public class PaginaNotFoundException extends RuntimeException{
+    public PaginaNotFoundException(String message) {
         super(message);
     }
 }
