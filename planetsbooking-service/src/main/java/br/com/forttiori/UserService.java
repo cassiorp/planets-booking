@@ -32,7 +32,7 @@ public class UserService {
             return this.userRepository.findAll();
 
         if(nome != null)
-            return this.userRepository.findByNomeStartingWith(nome);
+            return this.userRepository.findByNomeIgnoreCaseStartingWith(nome);
 
         return this.findAll(page - 1).toList();
     }
@@ -57,7 +57,7 @@ public class UserService {
     }
 
     public List<User> findByNomeStartingWith(String nome) {
-        return this.userRepository.findByNomeStartingWith(nome);
+        return this.userRepository.findByNomeIgnoreCaseStartingWith(nome);
     }
 
     public List<User> deleteMany(List<String> ids) {
