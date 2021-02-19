@@ -1,6 +1,7 @@
 package br.com.forttiori;
 
 import br.com.forttiori.DTO.UserRequestDTO;
+import br.com.forttiori.DTO.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,20 +17,25 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public User save(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+    public UserResponseDTO save(@Valid @RequestBody UserRequestDTO userRequestDTO) {
         return this.userService.save(userRequestDTO);
     }
 
     @GetMapping
-    public List<User> findAll(
+    public List<UserResponseDTO> findAll(
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "nome", required = false) String nome
     ) {
         return this.userService.find(page, nome);
     }
 
+    @GetMapping("/{id}")
+    public UserResponseDTO find(@PathVariable String id) {
+        return this.userService.findByIdResponse(id);
+    }
+
     @GetMapping("/price")
-    public List<User> findAllByReservations_PriceBetween(
+    public List<UserResponseDTO> findAllByReservations_PriceBetween(
             @RequestParam("min") Double min,
             @RequestParam("max") Double max
     ) {

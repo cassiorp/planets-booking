@@ -15,7 +15,7 @@ public class ReservationService {
     public Reservation save(String idUser, ReservationRequestDTO reservationRequestDTO) {
 
 
-        User user = this.userService.findById(idUser);
+        User user = this.userService.findByIdEntity(idUser);
         System.out.println(user);
         Reservation reservation = mapToReservationEntity(reservationRequestDTO);
         System.out.println(reservation);

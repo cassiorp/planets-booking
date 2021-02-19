@@ -1,3 +1,10 @@
 api:
   starwars: "https://swapi.dev/api/"
 
+
+spring:
+  data:
+    mongodb:
+      database: reservasdb
+      host: localhost
+      port: 27017

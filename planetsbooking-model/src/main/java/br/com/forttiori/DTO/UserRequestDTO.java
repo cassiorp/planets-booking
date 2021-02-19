@@ -21,12 +21,16 @@ public class UserRequestDTO {
     @NotNull
     @NotEmpty
     private String email;
+    @NotNull
+    @NotEmpty
+    private String senha;
 
-    public static User mapToUserEntity(UserRequestDTO userRequestDTO) {
+    public static User mapUserToEntity(UserRequestDTO userRequestDTO) {
         return Optional.ofNullable(userRequestDTO)
                 .map(userDTO -> User.builder()
                         .nome(userDTO.getNome())
                         .email(userDTO.getEmail())
+                        .senha(userDTO.getSenha())
                         .build())
                 .orElseThrow(() -> new IllegalArgumentException());
     }
