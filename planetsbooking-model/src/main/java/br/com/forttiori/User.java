@@ -22,7 +22,8 @@ public class User {
     private List<Reservation> reservations;
 
     @Builder
-    public User(String nome, String email) {
+    public User(String id,String nome, String email) {
+        this.id = id;
         this.nome = nome;
         this.email = email;
         this.reservations = new ArrayList<>();
