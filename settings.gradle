@@ -5,4 +5,5 @@ include 'planetsbooking-service'
 include 'planetsbooking-repository'
 include 'planetsbooking-integration'
 include 'planetsbooking-model'
+include 'planetsbooking-exception'
 

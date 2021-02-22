@@ -1,4 +1,6 @@
 dependencies {
     api project(':planetsbooking-repository')
     api project(':planetsbooking-model')
+    api project(':planetsbooking-exception')
+    implementation project(':planetsbooking-integration')
 }

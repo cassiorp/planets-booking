@@ -23,4 +23,12 @@ public class PlanetService {
         Optional<PlanetInfoResponse> planet = Optional.ofNullable(this.planetClient.findById(id));
         return planet.orElseThrow(() -> new RuntimeException());
     }
+
+    public PlanetResultResponse getAllPlanetsWithoutPagination(){
+        PlanetResultResponse resultResponse = new PlanetResultResponse();
+        for(int i = 1; i <= 6; i++){
+            resultResponse.setResults(this.planetClient.findAllPlanets(i).getResults());
+        }
+        return resultResponse;
+    }
 }

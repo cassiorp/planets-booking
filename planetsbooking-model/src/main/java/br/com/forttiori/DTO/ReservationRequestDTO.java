@@ -3,6 +3,8 @@ package br.com.forttiori.DTO;
 import br.com.forttiori.Reservation;
 import br.com.forttiori.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +15,8 @@ import java.util.Optional;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ReservationRequestDTO {
 
     @NotNull

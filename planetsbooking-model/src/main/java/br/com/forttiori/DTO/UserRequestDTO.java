@@ -1,10 +1,7 @@
 package br.com.forttiori.DTO;
 
 import br.com.forttiori.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -13,6 +10,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class UserRequestDTO {
 
     @NotNull
