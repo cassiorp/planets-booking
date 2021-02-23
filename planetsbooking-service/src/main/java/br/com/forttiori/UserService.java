@@ -63,10 +63,6 @@ public class UserService {
         return mapEntityToResponse(salvo);
     }
 
-//    public List<UserResponseDTO> findAllByReservations_PriceBetween(Double min, Double max) {
-//        return mapListUserToListResponse(this.userRepository.findAllByReservations_PriceBetween(min, max));
-//    }
-
     public List<User> deleteMany(List<String> ids) {
         Optional<Iterable<User>> users = Optional.ofNullable(this.userRepository.findAllById(ids));
         if(users.isPresent()){

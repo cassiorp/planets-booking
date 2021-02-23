@@ -34,14 +34,6 @@ public class UserController {
         return this.userService.findByIdResponse(id);
     }
 
-//    @GetMapping("/price")
-//    public List<UserResponseDTO> findAllByReservations_PriceBetween(
-//            @RequestParam("min") Double min,
-//            @RequestParam("max") Double max
-//    ) {
-//        return this.userService.findAllByReservations_PriceBetween(min, max);
-//    }
-
     @DeleteMapping
     public List<User> deleteMany(@RequestParam("ids") List<String> ids) {
         return userService.deleteMany(ids);
