@@ -12,15 +12,17 @@ import java.util.Optional;
 @Data
 @Builder
 public class UserRequestDTO {
+    private final String NOT_NULL = "Não pode ser nulo";
+    private final String NOT_EMPTY = "Não pode ser vazio";
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = NOT_NULL)
+    @NotEmpty(message = NOT_EMPTY)
     private String nome;
-    @NotNull
-    @NotEmpty
+    @NotNull(message = NOT_NULL)
+    @NotEmpty(message = NOT_EMPTY)
     private String email;
-    @NotNull
-    @NotEmpty
+    @NotNull(message = NOT_NULL)
+    @NotEmpty(message = NOT_EMPTY)
     private String senha;
 
     public static User mapUserToEntity(UserRequestDTO userRequestDTO) {

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.*;
+
 @RestController
 @RequestMapping("api/users")
 @RequiredArgsConstructor
@@ -17,6 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
+    @ResponseStatus(CREATED)
     public UserResponseDTO save(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         return this.userService.save(userRequestDTO);
     }
