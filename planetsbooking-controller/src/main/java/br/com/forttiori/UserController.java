@@ -17,7 +17,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public UserResponseDTO save(@Valid @RequestBody UserRequestDTO userRequestDTO) {
+    public UserResponseDTO save(@RequestBody @Valid UserRequestDTO userRequestDTO) {
         return this.userService.save(userRequestDTO);
     }
 
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserResponseDTO find(@PathVariable String id) {
+    public UserResponseDTO find(@Valid  @PathVariable String id) {
         return this.userService.findByIdResponse(id);
     }
 

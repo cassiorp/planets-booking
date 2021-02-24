@@ -1,18 +1,19 @@
 package br.com.forttiori.Exceptionhandlers;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 
 @Data
-@AllArgsConstructor
+@Builder
 public class StandardError {
 
     private Integer status;
+    private String error;
     private String message;
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataHora;
 
 }
