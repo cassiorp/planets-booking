@@ -19,12 +19,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.forttiori.DTO.UserResponseDTO.mapEntityToResponse;
+import static br.com.forttiori.DTO.UserResponseDTO.mapListUserToListResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+class UserServiceTest {
 
     @Mock
     UserRepository userRepository;
@@ -35,156 +37,154 @@ public class UserServiceTest {
 
     @Test
     @DisplayName("Deve salvar usuario e retornar Response DTO")
-    public void deveSalvarUsuarioERetornaResponse() {
+    void deveSalvarUsuarioERetornaResponse() {
         var stub = userStubIdNull();
         var retorno = userRetorno();
 
-        when( this.userRepository.save( stub ) ).thenReturn(retorno);
+        when(this.userRepository.save(stub)).thenReturn(retorno);
 
-        var salvo = this.userService.save( userRequestDTO() );
-        var esperado = UserResponseDTO.mapEntityToResponse( retorno );
+        var salvo = this.userService.save(userRequestDTO());
 
-        assertEquals( esperado, salvo );
+        var esperado = mapEntityToResponse(retorno);
+
+        assertEquals(esperado, salvo);
     }
 
 
     @Test
     @DisplayName("Deve salvar usuario e retornar entidade")
-    public void deveSalvarUsuario() {
+    void deveSalvarUsuario() {
         var stub = userStubIdNull();
         var retorno = userRetorno();
 
-        when( this.userRepository.save( stub ) ).thenReturn( retorno );
+        when(this.userRepository.save(stub)).thenReturn(retorno);
 
-        var salvo = this.userService.save( stub );
+        var salvo = this.userService.save(stub);
 
-        assertEquals( retorno, salvo );
+        assertEquals(retorno, salvo);
     }
 
     @Test
     @DisplayName("Deve chamar findAll do reposiotio, porque page e nome são nulos")
-    public void deveChamarFindAllRepositorio() {
+    void deveChamarFindAllRepositorio() {
         var list = this.usersList();
 
-        when( this.userRepository.findAll() ).thenReturn( list );
+        when(this.userRepository.findAll()).thenReturn(list);
 
-        var buscados = this.userService.findAll(null, null );
-        var esperados = UserResponseDTO.mapListUserToListResponse( list );
+        var buscados = this.userService.findAll(null, null);
+        var esperados = mapListUserToListResponse(list);
 
-        assertEquals( esperados, buscados );
+        assertEquals(esperados, buscados);
     }
 
     @Test
     @DisplayName("Deve chamar findByNomeIgnoreCaseStartingWith, nome não nulo")
-    public void deveChamarFindByNomeIgnoreCaseStartingWith() {
+    void deveChamarFindByNomeIgnoreCaseStartingWith() {
         var param = "Ca";
         var list = this.usersList();
 
-        when( this.userRepository.findByNomeIgnoreCaseStartingWith( param ) )
-                .thenReturn( Arrays.asList( list.get(0), list.get(4) ) );
+        when(this.userRepository.findByNomeIgnoreCaseStartingWith(param))
+                .thenReturn(Arrays.asList(list.get(0), list.get(4)));
 
-        var buscados = this.userService.findAll(null, param );
-        var esperados = UserResponseDTO
-                .mapListUserToListResponse( Arrays.asList( list.get(0), list.get(4) ) );
+        var buscados = this.userService.findAll(null, param);
+        var esperados = mapListUserToListResponse(Arrays.asList(list.get(0), list.get(4)));
 
-        assertEquals( esperados, buscados );
+        assertEquals(esperados, buscados);
     }
 
 
     @Test
     @DisplayName("Deve chamar findWithPagination")
-    public void deveChamarfindWithPagination() {
+    void deveChamarfindWithPagination() {
 
-        Page page1 = new PageImpl( usersList() );
-        when( this.userRepository.findAll( PageRequest.of(1 - 1, 5 ) ) ).thenReturn( page1 );
+        Page page1 = new PageImpl(usersList());
 
-        var buscados = this.userService.findAll(1, null );
-        var esperados = UserResponseDTO.mapListUserToListResponse( usersList() );
+        when(this.userRepository.findAll(PageRequest.of(0, 5))).thenReturn(page1);
 
-        assertEquals( esperados, buscados );
+        var buscados = this.userService.findAll(1, null);
+        var esperados = mapListUserToListResponse(usersList());
+
+        assertEquals(esperados, buscados);
     }
 
     @Test
     @DisplayName("Deve buscar usuario entidade por id")
-    public void deveBuscarUsuarioPorID() {
+    void deveBuscarUsuarioPorID() {
         var retorno = userRetorno();
 
-        when( this.userRepository.findById("id") ).thenReturn( Optional.ofNullable( retorno ) );
+        when(this.userRepository.findById("id")).thenReturn(Optional.ofNullable(retorno));
 
-        var buscado = this.userService.findByIdEntity( "id" );
+        var buscado = this.userService.findByIdEntity("id");
 
-        assertEquals( retorno, buscado );
+        assertEquals(retorno, buscado);
     }
 
     @Test
     @DisplayName("Deve buscar usuario response por id")
-    public void deveBuscarUsuarioResponsePorID() {
+    void deveBuscarUsuarioResponsePorID() {
         var retorno = userRetorno();
 
-        when( this.userRepository.findById("id") ).thenReturn( Optional.ofNullable(retorno) );
+        when(this.userRepository.findById("id")).thenReturn(Optional.ofNullable(retorno));
 
         var buscado = this.userService.findByIdResponse("id");
-        var esperando = UserResponseDTO.mapEntityToResponse( retorno );
+        var esperando = mapEntityToResponse(retorno);
 
-        assertEquals( esperando, buscado );
+        assertEquals(esperando, buscado);
     }
 
     @Test
     @DisplayName("Deve lançar exception e usuario/entidade não encontrado")
-    public void deveLancarExceptionUserNotFoundEntidade() {
-        String messageError = "User not found";
+    void deveLancarExceptionUserNotFoundEntidade() {
+        String messageError = "Usuario não encontrado";
 
-        UserNotFoundException exception = assertThrows( UserNotFoundException.class,
-                () -> userService.findByIdEntity( "id1" ) );
+        var exception = assertThrows(UserNotFoundException.class,
+                () -> userService.findByIdEntity("id1"));
 
-        assertEquals( messageError, exception.getMessage() );
+        assertEquals(messageError, exception.getMessage());
     }
 
     @Test
     @DisplayName("Deve lançar exception e usuario/Response não encontrado")
-    public void deveLancarExceptionUserNotFoundResponse() {
-        String messageError = "User not found";
+    void deveLancarExceptionUserNotFoundResponse() {
+        String messageError = "Usuario não encontrado";
 
-        UserNotFoundException exception = assertThrows( UserNotFoundException.class,
-                () -> userService.findByIdResponse( "id1" ) );
+        var exception = assertThrows(UserNotFoundException.class,
+                () -> userService.findByIdResponse("id1"));
 
-        assertEquals( messageError, exception.getMessage() );
+        assertEquals(messageError, exception.getMessage());
     }
 
     @Test
     @DisplayName("Deve editar usuario")
-    public void deveEditarUsuario() {
-        var retornoFind = userRetorno();
-        var retornoSave = user();
+    void deveEditarUsuario() {
+        var userBuscado = userRetorno();
+        var userSalvo = User.builder().id("1").nome("Cássio").email("cassio.r.pereira@mail.com").senha("senha").build();
 
-        when( userRepository.findById( "1" ) ).thenReturn( Optional.ofNullable( retornoFind ) );
-        when( userRepository.save( retornoFind ) ).thenReturn( retornoSave );
+        when(userRepository.findById("1")).thenReturn(Optional.ofNullable(userBuscado));
+        when(userRepository.save(userBuscado)).thenReturn(userSalvo);
 
-        var editado = this.userService.updateUser("1", userRequestDTO() );
-        var esperado = userResponseDTO();
+        var editado = this.userService.updateUser("1", userRequestDTOToUpDate());
 
-        assertEquals( esperado, editado );
+        assertEquals(userSalvo.getEmail(), editado.getEmail());
     }
 
     @Test
     @DisplayName("Deve deletar usuarios por id")
-    public void deveDeletarUsuariosPorID() {
-        Iterable<User> users = ( usersList() );
-        Iterable <String> ids = Arrays.asList("1","2","3","4","5");
+    void deveDeletarUsuariosPorID() {
+        Iterable<User> users = (usersList());
+        Iterable<String> ids = Arrays.asList("1", "2", "3", "4", "5");
 
-        when( userRepository.findAllById( ids ) ).thenReturn( users );
+        when(userRepository.findAllById(ids)).thenReturn(users);
 
-        var deletados = this.userService.deleteMany( (List<String>) ids );
+        var deletados = this.userService.deleteMany((List<String>) ids);
         var esperados = users;
 
-        assertEquals( esperados, deletados );
-        verify( userRepository, times(1) ).deleteAll( users );
+        assertEquals(esperados, deletados);
+        verify(userRepository, times(1)).deleteAll(users);
     }
 
 
-
-
-    public User userRetorno() {
+    User userRetorno() {
         return User.builder()
                 .id("1")
                 .nome("Cássio")
@@ -193,7 +193,7 @@ public class UserServiceTest {
                 .build();
     }
 
-    public User user() {
+    User user() {
         return User.builder()
                 .id("1")
                 .nome("Cássio")
@@ -202,7 +202,7 @@ public class UserServiceTest {
                 .build();
     }
 
-    public User userStubIdNull() {
+    User userStubIdNull() {
         return User.builder()
                 .id(null)
                 .nome("Cássio")
@@ -211,7 +211,7 @@ public class UserServiceTest {
                 .build();
     }
 
-    public UserRequestDTO userRequestDTO() {
+    UserRequestDTO userRequestDTO() {
         return UserRequestDTO.builder()
                 .nome("Cássio")
                 .email("cassio@mail.com")
@@ -219,7 +219,15 @@ public class UserServiceTest {
                 .build();
     }
 
-    public UserResponseDTO userResponseDTO() {
+    UserRequestDTO userRequestDTOToUpDate() {
+        return UserRequestDTO.builder()
+                .nome("Cássio")
+                .email("cassio.r.pereira@mail.com")
+                .senha("senha")
+                .build();
+    }
+
+    UserResponseDTO userResponseDTO() {
         return UserResponseDTO.builder()
                 .id("1")
                 .nome("Cássio")
@@ -228,7 +236,8 @@ public class UserServiceTest {
                 .build();
     }
 
-    public List<User> usersList() {
+
+    List<User> usersListIdNull() {
         return Arrays.asList(
                 User.builder().nome("Cassio").email("mail").senha("senha").build(),
                 User.builder().nome("Eduardo").email("mail").senha("senha").build(),
@@ -238,20 +247,40 @@ public class UserServiceTest {
         );
     }
 
-    public List<User> usersList2() {
+    List<User> usersList2() {
         return Arrays.asList(
                 User.builder().nome("Caio").email("mail").senha("senha").build(),
                 User.builder().nome("Eduardo").email("mail").senha("senha").build(),
                 User.builder().nome("SuperEdi").email("mail").senha("senha").build(),
                 User.builder().nome("Rodishow").email("mail").senha("senha").build(),
                 User.builder().nome("Cassio").email("mail").senha("senha").build()
-                );
+        );
     }
 
-    public List<User> usersListToPaginarionTest() {
+    List<User> usersListToPaginarionTest() {
         var list = usersList();
         list.addAll(usersList2());
         return list;
+    }
+
+    List<UserResponseDTO> usersResponseList() {
+        return Arrays.asList(
+                UserResponseDTO.builder().id("1").nome("Caio").email("mail").reservations(new ArrayList<>()).build(),
+                UserResponseDTO.builder().id("2").nome("Eduardo").email("mail").reservations(new ArrayList<>()).build(),
+                UserResponseDTO.builder().id("2").nome("SuperEdi").email("mail").reservations(new ArrayList<>()).build(),
+                UserResponseDTO.builder().id("3").nome("Rodishow").email("mail").reservations(new ArrayList<>()).build(),
+                UserResponseDTO.builder().id("4").nome("Cassio").email("mail").reservations(new ArrayList<>()).build()
+        );
+    }
+
+    List<User> usersList() {
+        return Arrays.asList(
+                User.builder().id("5").nome("Cassio").email("mail").senha("senha").build(),
+                User.builder().id("4").nome("Eduardo").email("mail").senha("senha").build(),
+                User.builder().id("3").nome("Rodishow").email("mail").senha("senha").build(),
+                User.builder().id("2").nome("SuperEdi").email("mail").senha("senha").build(),
+                User.builder().id("1").nome("Caio").email("mail").senha("senha").build()
+        );
     }
 
 }

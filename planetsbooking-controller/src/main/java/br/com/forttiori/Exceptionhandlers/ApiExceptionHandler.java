@@ -2,13 +2,9 @@ package br.com.forttiori.Exceptionhandlers;
 
 import br.com.forttiori.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,37 +13,15 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-
-    private final MessageSource messageSource;
-
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        List<Campo> campos = new ArrayList<>();
-        List<ObjectError> resultsErrors = ex.getBindingResult().getAllErrors();
-        resultsErrors.forEach(error ->
-                campos.add(
-                        new Campo(((FieldError) error).getField(), messageSource.getMessage(error, LocaleContextHolder.getLocale()))
-                )
-        );
-
-        StandardError erro = StandardError.builder()
-                .dataHora(LocalDateTime.now())
-                .status(status.value())
-                .message("Campos Invalidos, Verifique e Tente Novamente")
-                .error(status.getReasonPhrase())
-                .build();
-
-        ErrorResponse errorResponse = ErrorResponse.builder().error(erro).campos(campos).build();
-        return ResponseEntity.status(status).body(errorResponse);
-    }
 
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -55,10 +29,37 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public StandardError userNaoEncontrado(UserNotFoundException e) {
         return StandardError.builder()
                 .dataHora(LocalDateTime.now())
+                .error(NOT_FOUND.getReasonPhrase())
                 .message(e.getMessage())
                 .status(NOT_FOUND.value())
-                .error(NOT_FOUND.getReasonPhrase())
                 .build();
     }
+
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        List<ObjectError> errors = getErrors(ex);
+        ErrorResponse errorResponse = getErrorResponse(status, errors);
+        return new ResponseEntity<>(errorResponse, status);
+    }
+
+
+    private List<ObjectError> getErrors(MethodArgumentNotValidException ex) {
+        return ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> new ObjectError(error.getDefaultMessage(), error.getField(), error.getRejectedValue()))
+                .collect(Collectors.toList());
+    }
+
+    private ErrorResponse getErrorResponse(HttpStatus status, List<ObjectError> errors) {
+        StandardError erro = StandardError.builder()
+                .dataHora(LocalDateTime.now())
+                .status(status.value())
+                .message("Campos Invalidos, Verifique e Tente Novamente")
+                .error(status.getReasonPhrase())
+                .build();
+
+        return ErrorResponse.builder().error(erro).objectErrors(errors).build();
+    }
+
 
 }

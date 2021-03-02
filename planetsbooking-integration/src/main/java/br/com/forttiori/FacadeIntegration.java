@@ -1,7 +1,6 @@
 package br.com.forttiori;
 
 import br.com.forttiori.service.PlanetService;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component

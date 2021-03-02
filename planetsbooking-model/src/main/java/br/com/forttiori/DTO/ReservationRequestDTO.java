@@ -1,7 +1,6 @@
 package br.com.forttiori.DTO;
 
 import br.com.forttiori.Reservation;
-import br.com.forttiori.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

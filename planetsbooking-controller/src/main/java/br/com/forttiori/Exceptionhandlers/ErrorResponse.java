@@ -11,6 +11,6 @@ public class ErrorResponse {
 
     private StandardError error;
 
-    private List<Campo> campos;
+    private List<ObjectError> objectErrors;
 
 }

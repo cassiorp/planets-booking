@@ -3,9 +3,7 @@ package br.com.forttiori;
 import br.com.forttiori.DTO.UserRequestDTO;
 import br.com.forttiori.DTO.UserResponseDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -22,7 +20,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final String MESSAGE_NOT_FOUND_USER = "User not found";
+    private final String MESSAGE_NOT_FOUND_USER = "Usuario não encontrado";
     private final Integer PAGINATION_SIZE = 5;
 
     public UserResponseDTO save(UserRequestDTO userRequestDTO) {
