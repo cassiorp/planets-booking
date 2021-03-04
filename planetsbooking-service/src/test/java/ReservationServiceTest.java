@@ -34,7 +34,7 @@ public class ReservationServiceTest {
 
 
     @Test
-    @DisplayName("Deve Salvar planeta")
+    @DisplayName("Deve Salvar reserva")
     public void deveSalvarReserva() {
         var reservaStub = reservationIdNull();
         var reservaRetorno = reservation();
