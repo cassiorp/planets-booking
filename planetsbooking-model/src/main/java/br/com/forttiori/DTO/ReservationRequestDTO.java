@@ -35,11 +35,11 @@ public class ReservationRequestDTO {
 
     public static Reservation mapToReservationEntity(ReservationRequestDTO reservationRequestDTO) {
         return Optional.ofNullable(reservationRequestDTO)
-                .map(reservation -> Reservation.builder()
-                        .planet(reservationRequestDTO.getPlanet())
-                        .starship(reservationRequestDTO.getStarship())
-                        .price(reservation.getPrice())
-                        .date(reservationRequestDTO.getDate())
+                .map(reservationDTO -> Reservation.builder()
+                        .planet(reservationDTO.getPlanet())
+                        .starship(reservationDTO.getStarship())
+                        .price(reservationDTO.getPrice())
+                        .date(reservationDTO.getDate())
                         .build())
                 .orElseThrow(() -> new IllegalArgumentException());
     }

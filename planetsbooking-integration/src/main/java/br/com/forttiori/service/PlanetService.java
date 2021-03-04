@@ -31,4 +31,11 @@ public class PlanetService {
         }
         return resultResponse;
     }
+
+    public Boolean verifyPlanet(String planet) {
+        return !this.getAllPlanetsWithoutPagination()
+                .getResults().stream()
+                .anyMatch(r -> r.getName().equals(planet));
+    }
+
 }

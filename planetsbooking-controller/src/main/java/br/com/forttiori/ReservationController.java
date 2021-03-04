@@ -1,5 +1,6 @@
 package br.com.forttiori;
 
+import br.com.forttiori.DTO.NewDateDTO;
 import br.com.forttiori.DTO.ReservationRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,5 +15,15 @@ public class ReservationController {
     @PostMapping("/{idUser}")
     public Reservation save(@PathVariable String idUser, @RequestBody ReservationRequestDTO reservationRequestDTO) {
         return this.reservationService.save(idUser, reservationRequestDTO);
+    }
+
+    @PatchMapping("/{idUser}")
+    public Reservation updateDate(@PathVariable String idUser, @RequestBody NewDateDTO newDateDTO) {
+        return this.reservationService.updateDate(idUser, newDateDTO);
+    }
+
+    @DeleteMapping("/{idUser}/deletaReserva/{idReservation}")
+    public void delete(@PathVariable String idUser, @PathVariable String idReservation) {
+        this.reservationService.deleteById(idUser, idReservation);
     }
 }

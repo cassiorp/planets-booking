@@ -1,5 +1,3 @@
-import br.com.forttiori.DTO.UserRequestDTO;
-import br.com.forttiori.DTO.UserResponseDTO;
 import br.com.forttiori.User;
 import br.com.forttiori.UserNotFoundException;
 import br.com.forttiori.UserRepository;
@@ -14,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +21,7 @@ import static br.com.forttiori.DTO.UserResponseDTO.mapListUserToListResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+import static stubs.UserServiceStubs.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -67,7 +65,7 @@ class UserServiceTest {
     @Test
     @DisplayName("Deve chamar findAll do reposiotio, porque page e nome são nulos")
     void deveChamarFindAllRepositorio() {
-        var list = this.usersList();
+        var list = usersList();
 
         when(this.userRepository.findAll()).thenReturn(list);
 
@@ -81,7 +79,7 @@ class UserServiceTest {
     @DisplayName("Deve chamar findByNomeIgnoreCaseStartingWith, nome não nulo")
     void deveChamarFindByNomeIgnoreCaseStartingWith() {
         var param = "Ca";
-        var list = this.usersList();
+        var list = usersList();
 
         when(this.userRepository.findByNomeIgnoreCaseStartingWith(param))
                 .thenReturn(Arrays.asList(list.get(0), list.get(4)));
@@ -184,103 +182,5 @@ class UserServiceTest {
     }
 
 
-    User userRetorno() {
-        return User.builder()
-                .id("1")
-                .nome("Cássio")
-                .email("cassio@mail.com")
-                .senha("senha")
-                .build();
-    }
-
-    User user() {
-        return User.builder()
-                .id("1")
-                .nome("Cássio")
-                .email("cassio@mail.com")
-                .senha("senha")
-                .build();
-    }
-
-    User userStubIdNull() {
-        return User.builder()
-                .id(null)
-                .nome("Cássio")
-                .email("cassio@mail.com")
-                .senha("senha")
-                .build();
-    }
-
-    UserRequestDTO userRequestDTO() {
-        return UserRequestDTO.builder()
-                .nome("Cássio")
-                .email("cassio@mail.com")
-                .senha("senha")
-                .build();
-    }
-
-    UserRequestDTO userRequestDTOToUpDate() {
-        return UserRequestDTO.builder()
-                .nome("Cássio")
-                .email("cassio.r.pereira@mail.com")
-                .senha("senha")
-                .build();
-    }
-
-    UserResponseDTO userResponseDTO() {
-        return UserResponseDTO.builder()
-                .id("1")
-                .nome("Cássio")
-                .email("cassio@mail.com")
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-
-    List<User> usersListIdNull() {
-        return Arrays.asList(
-                User.builder().nome("Cassio").email("mail").senha("senha").build(),
-                User.builder().nome("Eduardo").email("mail").senha("senha").build(),
-                User.builder().nome("Rodishow").email("mail").senha("senha").build(),
-                User.builder().nome("SuperEdi").email("mail").senha("senha").build(),
-                User.builder().nome("Caio").email("mail").senha("senha").build()
-        );
-    }
-
-    List<User> usersList2() {
-        return Arrays.asList(
-                User.builder().nome("Caio").email("mail").senha("senha").build(),
-                User.builder().nome("Eduardo").email("mail").senha("senha").build(),
-                User.builder().nome("SuperEdi").email("mail").senha("senha").build(),
-                User.builder().nome("Rodishow").email("mail").senha("senha").build(),
-                User.builder().nome("Cassio").email("mail").senha("senha").build()
-        );
-    }
-
-    List<User> usersListToPaginarionTest() {
-        var list = usersList();
-        list.addAll(usersList2());
-        return list;
-    }
-
-    List<UserResponseDTO> usersResponseList() {
-        return Arrays.asList(
-                UserResponseDTO.builder().id("1").nome("Caio").email("mail").reservations(new ArrayList<>()).build(),
-                UserResponseDTO.builder().id("2").nome("Eduardo").email("mail").reservations(new ArrayList<>()).build(),
-                UserResponseDTO.builder().id("2").nome("SuperEdi").email("mail").reservations(new ArrayList<>()).build(),
-                UserResponseDTO.builder().id("3").nome("Rodishow").email("mail").reservations(new ArrayList<>()).build(),
-                UserResponseDTO.builder().id("4").nome("Cassio").email("mail").reservations(new ArrayList<>()).build()
-        );
-    }
-
-    List<User> usersList() {
-        return Arrays.asList(
-                User.builder().id("5").nome("Cassio").email("mail").senha("senha").build(),
-                User.builder().id("4").nome("Eduardo").email("mail").senha("senha").build(),
-                User.builder().id("3").nome("Rodishow").email("mail").senha("senha").build(),
-                User.builder().id("2").nome("SuperEdi").email("mail").senha("senha").build(),
-                User.builder().id("1").nome("Caio").email("mail").senha("senha").build()
-        );
-    }
 
 }

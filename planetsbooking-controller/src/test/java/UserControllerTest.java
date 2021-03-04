@@ -1,5 +1,3 @@
-import br.com.forttiori.DTO.UserRequestDTO;
-import br.com.forttiori.DTO.UserResponseDTO;
 import br.com.forttiori.User;
 import br.com.forttiori.UserController;
 import br.com.forttiori.UserService;
@@ -10,13 +8,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static br.com.forttiori.DTO.UserResponseDTO.mapListUserToListResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static stubs.UserControllerStubs.*;
+
 
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
@@ -102,50 +101,6 @@ public class UserControllerTest {
 
         assertEquals(esperados, deletados);
         verify(userService, times(1)).deleteMany(ids);
-    }
-
-
-    UserRequestDTO userRequestDTO() {
-        return UserRequestDTO.builder()
-                .nome("Cássio")
-                .email("cassio@mail.com")
-                .senha("senha")
-                .build();
-    }
-
-    UserResponseDTO userResponseDTO() {
-        return UserResponseDTO.builder()
-                .id("1")
-                .nome("Cássio")
-                .email("cassio@mail.com")
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-    List<User> usersList() {
-        return Arrays.asList(
-                User.builder().nome("Cassio").email("mail").senha("senha").build(),
-                User.builder().nome("Eduardo").email("mail").senha("senha").build(),
-                User.builder().nome("Rodishow").email("mail").senha("senha").build(),
-                User.builder().nome("SuperEdi").email("mail").senha("senha").build(),
-                User.builder().nome("Caio").email("mail").senha("senha").build()
-        );
-    }
-
-    List<User> usersList2() {
-        return Arrays.asList(
-                User.builder().nome("Caio").email("mail").senha("senha").build(),
-                User.builder().nome("Eduardo").email("mail").senha("senha").build(),
-                User.builder().nome("SuperEdi").email("mail").senha("senha").build(),
-                User.builder().nome("Rodishow").email("mail").senha("senha").build(),
-                User.builder().nome("Cassio").email("mail").senha("senha").build()
-        );
-    }
-
-    List<User> usersListToPaginarionTest() {
-        var list = usersList();
-        list.addAll(usersList2());
-        return list;
     }
 
 }

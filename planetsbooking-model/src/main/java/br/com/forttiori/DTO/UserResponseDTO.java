@@ -4,6 +4,8 @@ import br.com.forttiori.Reservation;
 import br.com.forttiori.User;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +18,7 @@ public class UserResponseDTO {
     private String id;
     private String nome;
     private String email;
+    @Indexed(direction = IndexDirection.ASCENDING)
     private List<Reservation> reservations;
 
 

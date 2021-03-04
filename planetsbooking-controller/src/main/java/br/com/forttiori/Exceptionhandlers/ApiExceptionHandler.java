@@ -1,5 +1,6 @@
 package br.com.forttiori.Exceptionhandlers;
 
+import br.com.forttiori.PlanetNotFoundException;
 import br.com.forttiori.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +28,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(NOT_FOUND)
     public StandardError userNaoEncontrado(UserNotFoundException e) {
+        return StandardError.builder()
+                .dataHora(LocalDateTime.now())
+                .error(NOT_FOUND.getReasonPhrase())
+                .message(e.getMessage())
+                .status(NOT_FOUND.value())
+                .build();
+    }
+
+    @ExceptionHandler(PlanetNotFoundException.class)
+    @ResponseStatus(NOT_FOUND)
+    public StandardError planetaNaoEncontrado(PlanetNotFoundException e) {
         return StandardError.builder()
                 .dataHora(LocalDateTime.now())
                 .error(NOT_FOUND.getReasonPhrase())
