@@ -1,15 +1,9 @@
 package br.com.forttiori.endpoints;
 
-import br.com.forttiori.DTO.UserRequestDTO;
-import br.com.forttiori.DTO.UserResponseDTO;
-import br.com.forttiori.User;
 import br.com.forttiori.UserController;
 import br.com.forttiori.UserNotFoundException;
 import br.com.forttiori.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import static org.hamcrest.Matchers.*;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +16,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
+import static br.com.forttiori.endpoints.stubs.UserControllerStubs.*;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
@@ -41,6 +36,7 @@ public class UserControllerEndpointsTest {
     @Test
     @DisplayName("Deve salvar usuario e status 201")
     public void deveSalvarUsuarioCREATED() throws Exception {
+
         var json = new ObjectMapper().writeValueAsString(userRequestDTO());
 
         when(this.userService.save(userRequestDTO())).thenReturn(userResponseDTO());
@@ -55,6 +51,7 @@ public class UserControllerEndpointsTest {
                 .andExpect(jsonPath("email", is("cassio@mail.com")))
                 .andExpect(jsonPath("reservations", is(new ArrayList())))
                 .andDo(print());
+
     }
 
     @Test
@@ -72,6 +69,7 @@ public class UserControllerEndpointsTest {
                 .andExpect(jsonPath("$[0].email", is("mail")))
                 .andExpect(jsonPath("$[0].reservations", is(new ArrayList())))
                 .andDo(print());
+
     }
 
     @Test
@@ -96,6 +94,7 @@ public class UserControllerEndpointsTest {
                 .andExpect(jsonPath("$[1].email", is("mail")))
                 .andExpect(jsonPath("$[1].reservations", is(new ArrayList())))
                 .andDo(print());
+
     }
 
     @Test
@@ -113,6 +112,7 @@ public class UserControllerEndpointsTest {
                 .andExpect(jsonPath("$[0].email", is("mail")))
                 .andExpect(jsonPath("$[0].reservations", is(new ArrayList())))
                 .andDo(print());
+
     }
 
 
@@ -130,6 +130,7 @@ public class UserControllerEndpointsTest {
                 .andExpect(jsonPath("email", is("cassio@mail.com")))
                 .andExpect(jsonPath("reservations", is(new ArrayList())))
                 .andDo(print());
+
     }
 
     @Test
@@ -143,8 +144,9 @@ public class UserControllerEndpointsTest {
     }
 
     @Test
-    @DisplayName("Deve deletar usuarios por lista de ids")
+    @DisplayName("Deve deletar usuarios por lista de ids e status 200")
     public void deveDeletarUsuariosPorListaIdsOK() throws Exception {
+
         List<String> ids = Arrays.asList("1","2","3","4","5");
 
         when(this.userService.deleteMany(ids)).thenReturn(usersList());
@@ -158,45 +160,8 @@ public class UserControllerEndpointsTest {
                 .andExpect(jsonPath("$[0].email", is("mail")))
                 .andExpect(jsonPath("$[0].reservations", is(new ArrayList())))
                 .andDo(print());
+
     }
 
-
-
-    public UserRequestDTO userRequestDTO() {
-        return UserRequestDTO.builder()
-                .nome("Cássio")
-                .email("cassio@mail.com")
-                .senha("senha")
-                .build();
-    }
-
-    public UserResponseDTO userResponseDTO() {
-        return UserResponseDTO.builder()
-                .id("1")
-                .nome("Cássio")
-                .email("cassio@mail.com")
-                .reservations(new ArrayList<>())
-                .build();
-    }
-
-    public List<User> usersList() {
-        return Arrays.asList(
-                User.builder().id("5").nome("Cassio").email("mail").senha("senha").build(),
-                User.builder().id("4").nome("Eduardo").email("mail").senha("senha").build(),
-                User.builder().id("3").nome("Rodishow").email("mail").senha("senha").build(),
-                User.builder().id("2").nome("SuperEdi").email("mail").senha("senha").build(),
-                User.builder().id("1").nome("Caio").email("mail").senha("senha").build()
-        );
-    }
-
-    public List<UserResponseDTO> usersResponseList() {
-        return Arrays.asList(
-                UserResponseDTO.builder().id("1").nome("Caio").email("mail").reservations(new ArrayList<>()).build(),
-                UserResponseDTO.builder().id("2").nome("Eduardo").email("mail").reservations(new ArrayList<>()).build(),
-                UserResponseDTO.builder().id("2").nome("SuperEdi").email("mail").reservations(new ArrayList<>()).build(),
-                UserResponseDTO.builder().id("3").nome("Rodishow").email("mail").reservations(new ArrayList<>()).build(),
-                UserResponseDTO.builder().id("4").nome("Cassio").email("mail").reservations(new ArrayList<>()).build()
-        );
-    }
 
 }
