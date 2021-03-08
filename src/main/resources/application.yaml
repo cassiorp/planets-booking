@@ -1,7 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: test
+
 api:
   starwars: "https://swapi.dev/api/"
 
 ---
+
 
 spring:
   data:
@@ -9,3 +17,18 @@ spring:
       database: reservasdb
       host: localhost
       port: 27017
+  config:
+    activate:
+      on-profile: dev
+
+---
+
+spring:
+  data:
+    mongodb:
+      database: reservasdb-test
+      host: localhost
+      port: 27017
+  config:
+    activate:
+      on-profile: test

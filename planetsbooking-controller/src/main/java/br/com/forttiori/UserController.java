@@ -33,12 +33,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserResponseDTO find(@Valid  @PathVariable String id) {
+    public UserResponseDTO find(@Valid @PathVariable String id) {
         return this.userService.findByIdResponse(id);
     }
 
     @DeleteMapping
-    public List<User> deleteMany(@RequestParam("ids") List<String> ids) {
+    public List<UserResponseDTO> deleteMany(@RequestParam("ids") List<String> ids) {
         return userService.deleteMany(ids);
     }
 

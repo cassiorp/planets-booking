@@ -1,10 +1,9 @@
-package br.com.forttiori.endpoints.stubs;
+package br.com.forttiori.endpointsTests.stubs;
 
 import br.com.forttiori.DTO.NewDateDTO;
 import br.com.forttiori.DTO.ReservationRequestDTO;
 import br.com.forttiori.Reservation;
 import br.com.forttiori.User;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
 

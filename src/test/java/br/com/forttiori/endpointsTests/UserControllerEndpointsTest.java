@@ -1,4 +1,4 @@
-package br.com.forttiori.endpoints;
+package br.com.forttiori.endpointsTests;
 
 import br.com.forttiori.UserController;
 import br.com.forttiori.UserNotFoundException;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static br.com.forttiori.endpoints.stubs.UserControllerStubs.*;
+import static br.com.forttiori.endpointsTests.stubs.UserControllerStubs.*;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
@@ -149,14 +149,14 @@ public class UserControllerEndpointsTest {
 
         List<String> ids = Arrays.asList("1","2","3","4","5");
 
-        when(this.userService.deleteMany(ids)).thenReturn(usersList());
+        when(this.userService.deleteMany(ids)).thenReturn(usersResponseList());
 
         this.mockMvc.perform(delete("/api/users?ids=1,2,3,4,5"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", is(5)))
-                .andExpect(jsonPath("$[0].id", is("5")))
-                .andExpect(jsonPath("$[0].nome", is("Cassio")))
+                .andExpect(jsonPath("$[0].id", is("1")))
+                .andExpect(jsonPath("$[0].nome", is("Caio")))
                 .andExpect(jsonPath("$[0].email", is("mail")))
                 .andExpect(jsonPath("$[0].reservations", is(new ArrayList())))
                 .andDo(print());

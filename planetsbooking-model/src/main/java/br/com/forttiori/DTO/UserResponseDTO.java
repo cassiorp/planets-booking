@@ -2,8 +2,10 @@ package br.com.forttiori.DTO;
 
 import br.com.forttiori.Reservation;
 import br.com.forttiori.User;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 
@@ -11,8 +13,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
+@Builder
 public class UserResponseDTO {
 
     private String id;

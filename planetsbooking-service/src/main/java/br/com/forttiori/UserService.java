@@ -33,10 +33,10 @@ public class UserService {
     }
 
     public List<UserResponseDTO> findAll(Integer page, String nome) {
-        if(page == null && nome == null)
+        if (page == null && nome == null)
             return mapListUserToListResponse(this.userRepository.findAll());
 
-        if(nome != null)
+        if (nome != null)
             return mapListUserToListResponse(this.userRepository.findByNomeIgnoreCaseStartingWith(nome));
 
         return mapListUserToListResponse(
@@ -61,11 +61,22 @@ public class UserService {
         return mapEntityToResponse(salvo);
     }
 
-    public List<User> deleteMany(List<String> ids) {
+//    public List<User> deleteMany(List<String> ids) {
+//        Optional<Iterable<User>> users = Optional.ofNullable(this.userRepository.findAllById(ids));
+//        if(users.isPresent()){
+//            this.userRepository.deleteAll(users.get());
+//        }
+//        return (List<User>) users.orElseGet(() -> Collections.emptyList());
+//    }
+
+    public List<UserResponseDTO> deleteMany(List<String> ids) {
         Optional<Iterable<User>> users = Optional.ofNullable(this.userRepository.findAllById(ids));
-        if(users.isPresent()){
+        if (users.isPresent()) {
             this.userRepository.deleteAll(users.get());
         }
-        return (List<User>) users.orElseGet(() -> Collections.emptyList());
+        return Optional.ofNullable(
+                mapListUserToListResponse((List<User>) users.get()))
+                .orElse(Collections.emptyList()
+                );
     }
 }

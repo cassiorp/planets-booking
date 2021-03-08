@@ -1,3 +1,4 @@
+import br.com.forttiori.DTO.UserResponseDTO;
 import br.com.forttiori.User;
 import br.com.forttiori.UserController;
 import br.com.forttiori.UserService;
@@ -91,13 +92,13 @@ public class UserControllerTest {
     @Test
     @DisplayName("Deve deletar usuarios por id")
     void deveDeletarUsuariosPorID() {
-        List<User> users = (usersList());
+        List<UserResponseDTO> users = mapListUserToListResponse(usersList());
         List<String> ids = Arrays.asList("1", "2", "3", "4", "5");
 
         when(userService.deleteMany(ids)).thenReturn(users);
 
         var deletados = this.userController.deleteMany(ids);
-        var esperados = users;
+        var esperados = (users);
 
         assertEquals(esperados, deletados);
         verify(userService, times(1)).deleteMany(ids);

@@ -175,7 +175,7 @@ class UserServiceTest {
         when(userRepository.findAllById(ids)).thenReturn(users);
 
         var deletados = this.userService.deleteMany((List<String>) ids);
-        var esperados = users;
+        var esperados = mapListUserToListResponse((List<User>) users);
 
         assertEquals(esperados, deletados);
         verify(userRepository, times(1)).deleteAll(users);
