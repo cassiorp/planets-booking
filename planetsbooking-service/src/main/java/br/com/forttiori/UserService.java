@@ -28,9 +28,12 @@ public class UserService {
         return mapEntityToResponse(user);
     }
 
+
     public User save(User user) {
         return this.userRepository.save(user);
     }
+
+    private void delete(){}
 
     public List<UserResponseDTO> findAll(Integer page, String nome) {
         if (page == null && nome == null)
